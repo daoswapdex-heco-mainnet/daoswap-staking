@@ -21,7 +21,7 @@
                     {{ tokenSymbol }}
                   </p>
                   <p>
-                    {{ $t("Staking Total Amount") }}：{{
+                    {{ $t("Staking LP Total Amount") }}：{{
                       accountAssets.stakedAmount
                     }}
                     {{ tokenSymbol }}

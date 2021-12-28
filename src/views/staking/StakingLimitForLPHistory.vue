@@ -48,7 +48,7 @@
                   class="ma-2"
                 >
                   <v-card-title>
-                    {{ $t("Staking Total Amount") }}: {{ item.stakedAmount }}
+                    {{ $t("Staking LP Total Amount") }}: {{ item.stakedAmount }}
                     {{ item.stakingTokenInfo.tokenSymbol }}
                   </v-card-title>
                   <v-divider class="mx-4"></v-divider>
