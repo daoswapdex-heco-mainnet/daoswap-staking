@@ -16,17 +16,17 @@
         <v-tabs background-color="transparent">
           <a
             class="v-tab font-weight-bold"
-            href="https://test.app.heco.daoswap.cc/#/swap"
+            href="https://app.heco.daoswap.cc/#/swap"
             >{{ $t("Swap") }}</a
           >
           <a
             class="v-tab font-weight-bold"
-            href="https://test.app.heco.daoswap.cc/#/pool"
+            href="https://app.heco.daoswap.cc/#/pool"
             >{{ $t("Pool") }}</a
           >
           <a
             class="v-tab font-weight-bold"
-            href="https://test.app.heco.daoswap.cc/#/dao"
+            href="https://app.heco.daoswap.cc/#/dao"
             >{{ $t("DAO") }}</a
           >
           <v-tab
