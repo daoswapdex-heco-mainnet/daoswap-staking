@@ -35,6 +35,9 @@ export default {
   Released: "Released",
   Start: "Start",
   Duration: "Duration",
+  "Receive Amount": "Receive Amount",
+  "Releasable Amount": "Releasable Amount",
+  "Released Amount": "Released Amount",
 
   Just: "Just",
   "minute ago": "minute ago",
@@ -95,5 +98,7 @@ export default {
   "Staking Duration": "Staking Duration",
   "Staking Rewards Token": "Staking Rewards Token",
   "Staking Cap Amount": "Max",
-  "Staked Total Amount": "Staked"
+  "Staked Total Amount": "Staked",
+  "Staked LP Total Amount": "Staked LP Total Amount",
+  "Staked DAO Total Amount": "Staked DAO Total Amount"
 };

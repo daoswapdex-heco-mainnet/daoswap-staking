@@ -35,6 +35,9 @@ export default {
   Released: "已提取金额",
   Start: "开始时间",
   Duration: "释放周期",
+  "Receive Amount": "得到数量",
+  "Releasable Amount": "待释放",
+  "Released Amount": "已释放",
 
   Just: "刚刚",
   "minute ago": "分钟前",
@@ -91,5 +94,7 @@ export default {
   "Staking Duration": "质押期限",
   "Staking Rewards Token": "奖励Token",
   "Staking Cap Amount": "封顶额度",
-  "Staked Total Amount": "已质押"
+  "Staked Total Amount": "已质押",
+  "Staked LP Total Amount": "已质押LP总量",
+  "Staked DAO Total Amount": "已质押DAO总量"
 };
