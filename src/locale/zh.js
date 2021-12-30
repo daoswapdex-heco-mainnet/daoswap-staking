@@ -93,6 +93,7 @@ export default {
   "Staking Enable Amount": "个人可质押额度",
   "Avaliable Amount": "个人可质押额度",
   "Staking Start Time": "质押开始时间",
+  "Staking End Time": "质押结束时间",
   "Staking Duration": "质押期限",
   "Staking Rewards Token": "奖励Token",
   "Staking Cap Amount": "封顶额度",

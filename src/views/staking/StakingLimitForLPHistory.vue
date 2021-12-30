@@ -35,6 +35,11 @@
                       }}
                     </p>
                     <p>
+                      {{ $t("Staking End Time") }}：{{
+                        item.end | parseTime("{y}-{m}-{d} {h}:{i}:{s}")
+                      }}
+                    </p>
+                    <p>
                       {{ $t("Staking Duration") }}：{{
                         item.duration | formatSeconds()
                       }}
@@ -198,7 +203,7 @@ import clip from "@/utils/clipboard";
 import {
   DAOAddress,
   DSTAddress,
-  StakingLimitForSingleContractAddress
+  StakingLimitForLPContractAddress
 } from "@/constants";
 import { getContract, weiToEther, toChecksumAddress } from "@/utils/web3";
 import { compare } from "@/filters/index";
@@ -208,7 +213,7 @@ import StakingLimit from "@/constants/contractJson/StakingLimit.json";
 import TokenVesting from "@/constants/contractJson/TokenVesting.json";
 
 export default {
-  name: "StakingLimitForSingleHistory",
+  name: "StakingLimitForLPHistory",
   data: () => ({
     DAOAddress,
     DSTAddress,
@@ -292,7 +297,7 @@ export default {
     async getAccountAssets() {
       const contract = getContract(
         StakingLimit,
-        StakingLimitForSingleContractAddress,
+        StakingLimitForLPContractAddress,
         this.web3
       );
       this.accountAssets.tokenVestingAddressList = await contract.methods
@@ -303,7 +308,7 @@ export default {
     async getContractInfo() {
       const contract = getContract(
         StakingLimit,
-        StakingLimitForSingleContractAddress,
+        StakingLimitForLPContractAddress,
         this.web3
       );
       const rewardsRateInfoList = await contract.methods
@@ -466,6 +471,7 @@ export default {
               staker: staker,
               start: start,
               duration: duration,
+              end: parseInt(start) + parseInt(duration),
               stakedAmount: stakedAmountFormat,
               stakingTokenInfo: stakingTokenInfo,
               releaseTokenList: releaseTokenList

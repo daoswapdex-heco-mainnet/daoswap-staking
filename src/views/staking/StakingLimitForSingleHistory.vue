@@ -35,6 +35,11 @@
                       }}
                     </p>
                     <p>
+                      {{ $t("Staking End Time") }}：{{
+                        item.end | parseTime("{y}-{m}-{d} {h}:{i}:{s}")
+                      }}
+                    </p>
+                    <p>
                       {{ $t("Staking Duration") }}：{{
                         item.duration | formatSeconds()
                       }}
@@ -466,6 +471,7 @@ export default {
               staker: staker,
               start: start,
               duration: duration,
+              end: parseInt(start) + parseInt(duration),
               stakedAmount: stakedAmountFormat,
               stakingTokenInfo: stakingTokenInfo,
               releaseTokenList: releaseTokenList

@@ -24,10 +24,6 @@
                     }}
                     {{ tokenSymbol }}
                   </p>
-                  <p>
-                    {{ $t("Avaliable Amount") }}：{{ maxStakingAmount }}
-                    {{ tokenSymbol }}
-                  </p>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -51,9 +47,7 @@
                       :label="
                         `${$t('Enter the staking single amount')}(${$t(
                           'At least'
-                        )} ${minStakingAmount} ${tokenSymbol}, ${$t(
-                          'At mostest'
-                        )} ${maxStakingAmount} ${tokenSymbol})`
+                        )} ${minStakingAmount} ${tokenSymbol})`
                       "
                       v-model="stakingAmount"
                       :error-messages="stakingAmountErrors"

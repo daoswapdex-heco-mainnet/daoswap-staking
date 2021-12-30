@@ -97,6 +97,7 @@ export default {
   "Staking Enable Amount": "Staking Enable Amount",
   "Avaliable Amount": "Avaliable Amount",
   "Staking Start Time": "Staking Start Time",
+  "Staking End Time": "Staking End Time",
   "Staking Duration": "Staking Duration",
   "Staking Rewards Token": "Staking Rewards Token",
   "Staking Cap Amount": "Max",
