@@ -21,7 +21,7 @@ export const CHAIN_ID = process.env.VUE_APP_CHAIN_ID || 128;
 
 export const NETWORK_ID = process.env.VUE_APP_NETWORK_ID || 128;
 
-export const WHITE_LISTS_SWITCH = true;
+export const WHITE_LISTS_SWITCH = false;
 export const WHITE_LISTS = [
   "0x9b1d0c9c1aE96011776e6786b4Efe884665918D2",
   "0xa9bB710996d6ed61B83a5EAB583bAe683199c2de",

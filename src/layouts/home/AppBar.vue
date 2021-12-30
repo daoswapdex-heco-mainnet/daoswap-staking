@@ -30,7 +30,6 @@
             >{{ $t("DAO") }}</a
           >
           <a
-            v-if="isInWhiteList"
             class="v-tab font-weight-bold"
             href="https://app.heco.daoswap.cc/#/staking-lp"
             >{{ $t("Node") }}</a

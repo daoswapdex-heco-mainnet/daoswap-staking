@@ -21,7 +21,7 @@ const routes = [
       {
         path: "/staking",
         name: "Staking",
-        redirect: "/404",
+        redirect: "/staking/lp",
         component: () => import("@/layouts/home/ViewBlank.vue"),
         children: [
           {
