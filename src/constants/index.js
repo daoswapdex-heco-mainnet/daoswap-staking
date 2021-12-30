@@ -1,12 +1,12 @@
 export const StakingLimitForLPTokenAddress =
   "0x1dbCac9E084A25d542893B14128a5910dF43a6b7";
 export const StakingLimitForLPContractAddress =
-  "0xCa2fCA74d3F5a66991896A70015359bF2989704C";
+  "0xC6f7f50a18D1071FE08b4E3EEE4db7c8A49faEA0";
 
 export const StakingLimitForSingleTokenAddress =
   "0xc096332CAacF00319703558988aD03eC6586e704";
 export const StakingLimitForSingleContractAddress =
-  "0x273649EEb4B8b6BB28C246271F72EcF6056E44Bb";
+  "0x0FFCa2C64F62bC384C583EEa2f6D11D8DDe5c6Ed";
 
 /********** base **********/
 export const DAOAddress = "0xc096332CAacF00319703558988aD03eC6586e704";
