@@ -143,6 +143,23 @@
               </v-row>
             </v-card-text>
           </v-card>
+          <!-- 官方说明 -->
+          <v-card justify="center" class="fill-width mt-10">
+            <v-card-text>
+              <v-row align="center">
+                <v-col class="body-1" cols="12">
+                  <p @click="handleCopy(DAOAddress, $event)">
+                    DAO contract: {{ DAOAddress }}
+                    <v-icon>mdi-content-copy</v-icon>
+                  </p>
+                  <p @click="handleCopy(DSTAddress, $event)">
+                    DST contract: {{ DSTAddress }}
+                    <v-icon>mdi-content-copy</v-icon>
+                  </p>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
           <!-- 遮罩层 -->
           <v-overlay z-index="9999" opacity="0.7" :value="loading">
             <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -188,6 +205,8 @@ import { validationMixin } from "vuelidate";
 import { required, decimal } from "vuelidate/lib/validators";
 import clip from "@/utils/clipboard";
 import {
+  DAOAddress,
+  DSTAddress,
   StakingLimitForLPTokenAddress,
   StakingLimitForLPContractAddress
 } from "@/constants";
@@ -203,6 +222,8 @@ export default {
     stakingAmount: { required, decimal }
   },
   data: () => ({
+    DAOAddress,
+    DSTAddress,
     loading: false,
     tokenSymbol: "DAO",
     // 表单数据
@@ -278,11 +299,7 @@ export default {
           this.$t("StakingLPForm.The amount does not meet the requirements")
         );
       }
-      if (
-        parseFloat(stakingAmountValue) +
-          parseFloat(this.accountAssets.stakedAmount) >
-        this.maxStakingAmount
-      ) {
+      if (parseFloat(stakingAmountValue) > this.maxStakingAmount) {
         errors.push(
           this.$t("StakingLPForm.The amount exceeds the max staking amount")
         );

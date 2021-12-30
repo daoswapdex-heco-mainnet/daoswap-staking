@@ -11,6 +11,7 @@ export default {
   Node: "Node",
 
   Close: "Close",
+  "No Data": "No Data",
 
   "Connect Wallet": "Connect Wallet",
   "Disconnect Wallet": "Disconnect Wallet",
@@ -20,6 +21,7 @@ export default {
   to: "to",
   usdt: "USDT",
   Claim: "Claim",
+  "Approve Success": "Approve Success",
   "Claim Success": "Claim Success",
 
   "DAO is offical goverance token for DAOSWAP.":
@@ -100,5 +102,6 @@ export default {
   "Staking Cap Amount": "Max",
   "Staked Total Amount": "Staked",
   "Staked LP Total Amount": "Staked LP Total Amount",
-  "Staked DAO Total Amount": "Staked DAO Total Amount"
+  "Staked DAO Total Amount": "Staked DAO Total Amount",
+  "Claim Staking": "Claim Staking"
 };

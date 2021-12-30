@@ -3,31 +3,6 @@
     <v-container v-if="web3 && connected" class="fill-height">
       <v-row justify="center">
         <v-col md="6">
-          <!-- 数据显示 -->
-          <!-- <v-card justify="center" class="fill-width">
-            <v-card-title>
-              <span class="title font-weight-bold text-h5">
-                {{ $t("Status") }}
-              </span>
-            </v-card-title>
-            <v-divider></v-divider>
-            <v-card-text>
-              <v-row align="center">
-                <v-col class="body-1" cols="12">
-                  <p>
-                    {{
-                      $t("Current forging to be released") + " " + tokenSymbol
-                    }}：{{ accountAssets.toBeReleasableAmount }}
-                  </p>
-                  <p>
-                    {{ $t("Hash power node (NH) status") }}：{{
-                      $t(`Node.${accountAssets.nodeName}`)
-                    }}
-                  </p>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card> -->
           <!-- 操作 -->
           <v-card class="fill-width mt-10">
             <v-card outlined>
@@ -114,7 +89,10 @@
                   <v-divider class="mx-4"></v-divider>
                   <v-card-actions class="justify-center">
                     <v-btn
-                      v-if="item.stakingTokenInfo.releasableAmount > 0"
+                      v-if="
+                        item.stakingTokenInfo.isToReleaseTime &&
+                          item.stakingTokenInfo.releasableAmount > 0
+                      "
                       color="#93B954"
                       dark
                       width="80%"
@@ -151,6 +129,23 @@
                 >
                   <p>
                     {{ address }}
+                    <v-icon>mdi-content-copy</v-icon>
+                  </p>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+          <!-- 官方说明 -->
+          <v-card justify="center" class="fill-width mt-10">
+            <v-card-text>
+              <v-row align="center">
+                <v-col class="body-1" cols="12">
+                  <p @click="handleCopy(DAOAddress, $event)">
+                    DAO contract: {{ DAOAddress }}
+                    <v-icon>mdi-content-copy</v-icon>
+                  </p>
+                  <p @click="handleCopy(DSTAddress, $event)">
+                    DST contract: {{ DSTAddress }}
                     <v-icon>mdi-content-copy</v-icon>
                   </p>
                 </v-col>
@@ -198,8 +193,13 @@
 </template>
 
 <script>
+import { JSBI } from "@/utils/jsbi";
 import clip from "@/utils/clipboard";
-import { StakingLimitForSingleContractAddress } from "@/constants";
+import {
+  DAOAddress,
+  DSTAddress,
+  StakingLimitForSingleContractAddress
+} from "@/constants";
 import { getContract, weiToEther, toChecksumAddress } from "@/utils/web3";
 import { compare } from "@/filters/index";
 // 引入合约 ABI 文件
@@ -210,6 +210,8 @@ import TokenVesting from "@/constants/contractJson/TokenVesting.json";
 export default {
   name: "StakingLimitForSingleHistory",
   data: () => ({
+    DAOAddress,
+    DSTAddress,
     loading: false,
     // 当前账户相关信息
     accountAssets: {
@@ -341,6 +343,7 @@ export default {
             const start = await contract.methods.start().call();
             const duration = await contract.methods.duration().call();
             const stakedAmount = await contract.methods.stakedAmount().call();
+            const stakedAmountFormat = weiToEther(stakedAmount, this.web3);
             // staking token info
             const contractForERC20 = await getContract(
               ERC20,
@@ -359,6 +362,9 @@ export default {
             const stakingTokenInfoReleasableAmount = await contract.methods
               .releasableAmount(stakingToken)
               .call({ from: this.currentAccount });
+            const stakingTokenInfoIsToReleaseTime = await contract.methods
+              .isToReleaseTime()
+              .call({ from: this.currentAccount });
             const stakingTokenInfo = {
               contractAddress: item,
               token: stakingToken,
@@ -371,7 +377,8 @@ export default {
               releasableAmount: weiToEther(
                 stakingTokenInfoReleasableAmount,
                 this.web3
-              )
+              ),
+              isToReleaseTime: stakingTokenInfoIsToReleaseTime
             };
             // 获取奖励代币信息
             const releaseTokenList = [];
@@ -383,27 +390,46 @@ export default {
                     rewardsRateInfo.token,
                     this.web3
                   );
+                  // 代币余额
                   const tempInfoBalance = await contractForERC20.methods
                     .balanceOf(item)
                     .call();
-                  const tempInfoReleasedAmount = await contract.methods
-                    .released(rewardsRateInfo.token)
-                    .call({ from: this.currentAccount });
-                  const tempInfoReleasableAmount = await contract.methods
-                    .releasableAmount(rewardsRateInfo.token)
-                    .call({ from: this.currentAccount });
                   const tempInfoBalanceFormat = weiToEther(
                     tempInfoBalance,
                     this.web3
                   );
-                  const tempInfoReleasedAmountFormat = weiToEther(
-                    tempInfoReleasedAmount,
-                    this.web3
+                  // 已提取数量
+                  const tempInfoReleasedAmount = await contract.methods
+                    .released(rewardsRateInfo.token)
+                    .call({ from: this.currentAccount });
+                  // 可提取数量
+                  const tempInfoReleasableAmount = await contract.methods
+                    .releasableAmount(rewardsRateInfo.token)
+                    .call({ from: this.currentAccount });
+                  // 计算收到奖励数量
+                  let calcReceiveableAmount = JSBI.BigInt(tempInfoBalance);
+                  if (rewardsRateInfo.token === stakingToken) {
+                    calcReceiveableAmount = JSBI.subtract(
+                      calcReceiveableAmount,
+                      JSBI.BigInt(stakedAmount)
+                    );
+                  }
+                  const calcReceiveAmount = JSBI.add(
+                    calcReceiveableAmount,
+                    JSBI.BigInt(tempInfoReleasedAmount)
                   );
-                  const tempInfoReleasableAmountFormat = weiToEther(
-                    tempInfoReleasableAmount,
-                    this.web3
-                  );
+                  const calcReleasedAmount = JSBI.lessThan(
+                    calcReceiveAmount,
+                    JSBI.BigInt(tempInfoReleasedAmount)
+                  )
+                    ? parseFloat(calcReceiveAmount)
+                    : JSBI.BigInt(tempInfoReleasedAmount);
+                  const calcReleasableAmount = JSBI.lessThan(
+                    calcReceiveAmount,
+                    JSBI.BigInt(tempInfoReleasableAmount)
+                  )
+                    ? JSBI.subtract(calcReceiveAmount, calcReleasedAmount)
+                    : JSBI.BigInt(tempInfoReleasableAmount);
                   // 封装奖励代币信息
                   const tempInfo = {
                     contractAddress: item,
@@ -412,11 +438,18 @@ export default {
                     name: rewardsRateInfo.name,
                     symbol: rewardsRateInfo.symbol,
                     balance: tempInfoBalanceFormat,
-                    releasedAmount: tempInfoReleasedAmountFormat,
-                    releasableAmount: tempInfoReleasableAmountFormat,
-                    receiveAmount:
-                      parseFloat(tempInfoBalanceFormat) +
-                      parseFloat(tempInfoReleasedAmountFormat)
+                    releasedAmount: weiToEther(
+                      calcReleasedAmount.toString(),
+                      this.web3
+                    ),
+                    releasableAmount: weiToEther(
+                      calcReleasableAmount.toString(),
+                      this.web3
+                    ),
+                    receiveAmount: weiToEther(
+                      calcReceiveAmount.toString(),
+                      this.web3
+                    )
                   };
                   if (tempInfo.receiveAmount > 0) {
                     releaseTokenList.push(tempInfo);
@@ -433,7 +466,7 @@ export default {
               staker: staker,
               start: start,
               duration: duration,
-              stakedAmount: weiToEther(stakedAmount, this.web3),
+              stakedAmount: stakedAmountFormat,
               stakingTokenInfo: stakingTokenInfo,
               releaseTokenList: releaseTokenList
             };
