@@ -1,9 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import StakingLimitForLP from "../views/staking/StakingLimitForLP.vue";
-import StakingLimitForLPHistory from "../views/staking/StakingLimitForLPHistory.vue";
-import StakingLimitForSingle from "../views/staking/StakingLimitForSingle.vue";
-import StakingLimitForSingleHistory from "../views/staking/StakingLimitForSingleHistory.vue";
+import StakingLimitForLP1 from "../views/staking/StakingLimitForLP1.vue";
+import StakingLimitForLPHistory1 from "../views/staking/StakingLimitForLPHistory1.vue";
+import StakingLimitForLP2 from "../views/staking/StakingLimitForLP2.vue";
+import StakingLimitForLPHistory2 from "../views/staking/StakingLimitForLPHistory2.vue";
+import StakingLimitForSingle1 from "../views/staking/StakingLimitForSingle1.vue";
+import StakingLimitForSingleHistory1 from "../views/staking/StakingLimitForSingleHistory1.vue";
 
 Vue.use(VueRouter);
 
@@ -27,18 +29,28 @@ const routes = [
           {
             path: "/staking/lp",
             name: "StakingLimitForLP",
-            redirect: "/staking/lp/1",
+            redirect: "/staking/lp/2",
             component: () => import("@/layouts/home/ViewBlank.vue"),
             children: [
               {
+                path: "/staking/lp/2",
+                name: "StakingLimitForLP2",
+                component: StakingLimitForLP2
+              },
+              {
+                path: "/staking/lp/2/history",
+                name: "StakingLimitForLP2History",
+                component: StakingLimitForLPHistory2
+              },
+              {
                 path: "/staking/lp/1",
                 name: "StakingLimitForLP1",
-                component: StakingLimitForLP
+                component: StakingLimitForLP1
               },
               {
                 path: "/staking/lp/1/history",
                 name: "StakingLimitForLP1History",
-                component: StakingLimitForLPHistory
+                component: StakingLimitForLPHistory1
               }
             ]
           },
@@ -51,12 +63,12 @@ const routes = [
               {
                 path: "/staking/single/1",
                 name: "StakingLimitForSingle1",
-                component: StakingLimitForSingle
+                component: StakingLimitForSingle1
               },
               {
                 path: "/staking/single/1/history",
                 name: "StakingLimitForSingle1History",
-                component: StakingLimitForSingleHistory
+                component: StakingLimitForSingleHistory1
               }
             ]
           }
@@ -64,11 +76,11 @@ const routes = [
       },
       {
         path: "/404",
-        component: () => import("@/views/home/Index.vue")
+        component: () => import("@/views/404.vue")
       },
       {
         path: "*",
-        redirect: "/"
+        redirect: "/404"
       }
     ]
   }

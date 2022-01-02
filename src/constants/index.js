@@ -1,11 +1,16 @@
-export const StakingLimitForLPTokenAddress =
+export const StakingLimitForLPTokenAddress1 =
   "0x1dbCac9E084A25d542893B14128a5910dF43a6b7";
-export const StakingLimitForLPContractAddress =
+export const StakingLimitForLPContractAddress1 =
   "0xC6f7f50a18D1071FE08b4E3EEE4db7c8A49faEA0";
 
-export const StakingLimitForSingleTokenAddress =
+export const StakingLimitForLPTokenAddress2 =
+  "0x1dbCac9E084A25d542893B14128a5910dF43a6b7";
+export const StakingLimitForLPContractAddress2 =
+  "0xab5f0c81b2216c803AF6173d898a121314235dc5";
+
+export const StakingLimitForSingleTokenAddress1 =
   "0xc096332CAacF00319703558988aD03eC6586e704";
-export const StakingLimitForSingleContractAddress =
+export const StakingLimitForSingleContractAddress1 =
   "0x0FFCa2C64F62bC384C583EEa2f6D11D8DDe5c6Ed";
 
 /********** base **********/

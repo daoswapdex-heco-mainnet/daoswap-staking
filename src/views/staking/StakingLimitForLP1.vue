@@ -21,13 +21,13 @@
                     {{ tokenSymbol }}
                   </p>
                   <p>
-                    {{ $t("Staked DAO Total Amount") }}：{{ stakedTotalAmount }}
+                    {{ $t("Staking LP Total Amount") }}：{{
+                      accountAssets.stakedAmount
+                    }}
                     {{ tokenSymbol }}
                   </p>
                   <p>
-                    {{ $t("Staking DAO Total Amount") }}：{{
-                      accountAssets.stakedAmount
-                    }}
+                    {{ $t("Avaliable Amount") }}：{{ maxStakingAmount }}
                     {{ tokenSymbol }}
                   </p>
                 </v-col>
@@ -42,7 +42,7 @@
                   <img :src="require('@/assets/logo.png')" alt="DAO" />
                 </v-avatar>
                 <span class="title font-weight-bold text-h5">
-                  {{ $t("StakingSingle") }}
+                  {{ $t("StakingLP") }}
                 </span>
               </v-card-title>
               <v-divider></v-divider>
@@ -51,9 +51,11 @@
                   <v-card-text>
                     <v-text-field
                       :label="
-                        `${$t('Enter the staking single amount')}(${$t(
+                        `${$t('Enter the staking lp amount')}(${$t(
                           'At least'
-                        )} ${minStakingAmount} ${tokenSymbol})`
+                        )} ${minStakingAmount} ${tokenSymbol}, ${$t(
+                          'At mostest'
+                        )} ${maxStakingAmount} ${tokenSymbol})`
                       "
                       v-model="stakingAmount"
                       :error-messages="stakingAmountErrors"
@@ -206,8 +208,8 @@ import clip from "@/utils/clipboard";
 import {
   DAOAddress,
   DSTAddress,
-  StakingLimitForSingleTokenAddress,
-  StakingLimitForSingleContractAddress
+  StakingLimitForLPTokenAddress1,
+  StakingLimitForLPContractAddress1
 } from "@/constants";
 import { getContract, weiToEther, etherToWei } from "@/utils/web3";
 // 引入合约 ABI 文件
@@ -215,7 +217,7 @@ import ERC20DAO from "@/constants/contractJson/ERC20DAO.json";
 import StakingLimit from "@/constants/contractJson/StakingLimit.json";
 
 export default {
-  name: "StakingLimitForSingle",
+  name: "StakingLimitForLP1",
   mixins: [validationMixin],
   validations: {
     stakingAmount: { required, decimal }
@@ -282,39 +284,35 @@ export default {
       const errors = [];
       if (!this.$v.stakingAmount.$dirty) return errors;
       !this.$v.stakingAmount.decimal &&
-        errors.push(this.$t("StakingSingleForm.Invalid amount"));
+        errors.push(this.$t("StakingLPForm.Invalid amount"));
       !this.$v.stakingAmount.required &&
-        errors.push(this.$t("StakingSingleForm.The amount is required"));
+        errors.push(this.$t("StakingLPForm.The amount is required"));
 
       const stakingAmountValue = parseFloat(this.$v.stakingAmount.$model);
       if (stakingAmountValue <= 0) {
-        errors.push(this.$t("StakingSingleForm.The amount is be gt zero"));
+        errors.push(this.$t("StakingLPForm.The amount is be gt zero"));
       }
       if (
         stakingAmountValue > 0 &&
         stakingAmountValue < this.minStakingAmount
       ) {
         errors.push(
-          this.$t("StakingSingleForm.The amount does not meet the requirements")
+          this.$t("StakingLPForm.The amount does not meet the requirements")
         );
       }
       if (parseFloat(stakingAmountValue) > this.maxStakingAmount) {
         errors.push(
-          this.$t("StakingSingleForm.The amount exceeds the max staking amount")
+          this.$t("StakingLPForm.The amount exceeds the max staking amount")
         );
       }
       if (
         parseFloat(stakingAmountValue) + parseFloat(this.stakedTotalAmount) >
         this.cap
       ) {
-        errors.push(
-          this.$t("StakingSingleForm.The amount exceeds the cap amount")
-        );
+        errors.push(this.$t("StakingLPForm.The amount exceeds the cap amount"));
       }
       if (stakingAmountValue > this.accountAssets.balance) {
-        errors.push(
-          this.$t("StakingSingleForm.The amount exceeds the balance")
-        );
+        errors.push(this.$t("StakingLPForm.The amount exceeds the balance"));
       }
       return errors;
     },
@@ -354,14 +352,14 @@ export default {
       // 查询当前账号余额
       const contractERC20DAO = getContract(
         ERC20DAO,
-        StakingLimitForSingleTokenAddress,
+        StakingLimitForLPTokenAddress1,
         this.web3
       );
       const balance = await contractERC20DAO.methods
         .balanceOf(this.address)
         .call();
       const allowance = await contractERC20DAO.methods
-        .allowance(this.address, StakingLimitForSingleContractAddress)
+        .allowance(this.address, StakingLimitForLPContractAddress1)
         .call();
       this.accountAssets.balance = weiToEther(balance, this.web3);
       this.accountAssets.allowanceAmount = weiToEther(allowance, this.web3);
@@ -370,7 +368,7 @@ export default {
     async getContractInfo() {
       const contract = getContract(
         StakingLimit,
-        StakingLimitForSingleContractAddress,
+        StakingLimitForLPContractAddress1,
         this.web3
       );
       const stakedTotalAmount = await contract.methods
@@ -415,9 +413,9 @@ export default {
     handleApprove() {
       this.loading = true;
       // 执行合约
-      getContract(ERC20DAO, StakingLimitForSingleTokenAddress, this.web3)
+      getContract(ERC20DAO, StakingLimitForLPTokenAddress1, this.web3)
         .methods.approve(
-          StakingLimitForSingleContractAddress,
+          StakingLimitForLPContractAddress1,
           etherToWei(this.stakingAmount, this.web3)
         )
         .send({ from: this.address })
@@ -447,11 +445,7 @@ export default {
       } else {
         this.$v.$touch();
         this.loading = true;
-        getContract(
-          StakingLimit,
-          StakingLimitForSingleContractAddress,
-          this.web3
-        )
+        getContract(StakingLimit, StakingLimitForLPContractAddress1, this.web3)
           .methods.stakingTokens(etherToWei(this.stakingAmount, this.web3))
           .send({ from: this.address })
           .then(() => {
@@ -469,7 +463,7 @@ export default {
     },
     // 跳转历史记录
     gotoHistory() {
-      this.$router.push({ path: "/staking/single/1/history" });
+      this.$router.push({ path: "/staking/lp/1/history" });
     }
   }
 };
