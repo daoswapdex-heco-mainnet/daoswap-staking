@@ -8,6 +8,11 @@ export const StakingLimitForLPTokenAddress2 =
 export const StakingLimitForLPContractAddress2 =
   "0xab5f0c81b2216c803AF6173d898a121314235dc5";
 
+export const StakingLimitForLPTokenAddress3 =
+  "0x1dbCac9E084A25d542893B14128a5910dF43a6b7";
+export const StakingLimitForLPContractAddress3 =
+  "0x63f84cc9474f47f50784A98F498d0E236e982dc1";
+
 export const StakingLimitForSingleTokenAddress1 =
   "0xc096332CAacF00319703558988aD03eC6586e704";
 export const StakingLimitForSingleContractAddress1 =
