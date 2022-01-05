@@ -249,7 +249,10 @@ export default {
       color: "success",
       snackbar: false,
       text: `Hello`
-    }
+    },
+    // 补差额
+    capDiff: 100000,
+    stakedTotalAmountDiff: 100000
   }),
   created() {
     if (this.web3 && this.connected) {
@@ -374,9 +377,20 @@ export default {
       const stakedTotalAmount = await contract.methods
         .stakedTotalAmount()
         .call();
-      this.stakedTotalAmount = weiToEther(stakedTotalAmount, this.web3);
+      const stakedTotalAmountFormat = JSBI.add(
+        JSBI.BigInt(stakedTotalAmount),
+        JSBI.BigInt(etherToWei(this.stakedTotalAmountDiff, this.web3))
+      );
+      this.stakedTotalAmount = weiToEther(
+        stakedTotalAmountFormat.toString(),
+        this.web3
+      );
       const cap = await contract.methods.cap().call();
-      this.cap = weiToEther(cap, this.web3);
+      const capAmountFormat = JSBI.add(
+        JSBI.BigInt(cap),
+        JSBI.BigInt(etherToWei(this.capDiff, this.web3))
+      );
+      this.cap = weiToEther(capAmountFormat.toString(), this.web3);
       const maxStakingAmount = await contract.methods.maxStakingAmount().call();
       this.maxStakingAmount = weiToEther(maxStakingAmount, this.web3);
       const minStakingAmount = await contract.methods.minStakingAmount().call();
@@ -395,8 +409,8 @@ export default {
       );
       // 计算最多可质押数量
       const remainingStakingAmount = JSBI.subtract(
-        JSBI.BigInt(cap),
-        JSBI.BigInt(stakedTotalAmount)
+        capAmountFormat,
+        stakedTotalAmountFormat
       );
       const enableStakingAmount = JSBI.subtract(
         JSBI.BigInt(maxStakingAmount),
