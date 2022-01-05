@@ -18,6 +18,11 @@ export const StakingLimitForSingleTokenAddress1 =
 export const StakingLimitForSingleContractAddress1 =
   "0x0FFCa2C64F62bC384C583EEa2f6D11D8DDe5c6Ed";
 
+export const StakingLimitForSingleTokenAddress2 =
+  "0xc096332CAacF00319703558988aD03eC6586e704";
+export const StakingLimitForSingleContractAddress2 =
+  "0xE84d6F2b07ECA5BA4274e4370CF03F74cE98f49e";
+
 /********** base **********/
 export const DAOAddress = "0xc096332CAacF00319703558988aD03eC6586e704";
 

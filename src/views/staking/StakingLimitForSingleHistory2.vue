@@ -23,7 +23,7 @@
                   class="ma-2"
                 >
                   <v-card-title>
-                    {{ $t("Staking LP Total Amount") }}:
+                    {{ $t("Staking DAO Total Amount") }}:
                     {{ item.stakedAmount }}
                     {{ item.stakingTokenInfo.tokenSymbol }}
                   </v-card-title>
@@ -203,7 +203,7 @@ import clip from "@/utils/clipboard";
 import {
   DAOAddress,
   DSTAddress,
-  StakingLimitForLPContractAddress3
+  StakingLimitForSingleContractAddress2
 } from "@/constants";
 import { getContract, weiToEther, toChecksumAddress } from "@/utils/web3";
 import { compare } from "@/filters/index";
@@ -213,7 +213,7 @@ import StakingLimit from "@/constants/contractJson/StakingLimit.json";
 import TokenVesting from "@/constants/contractJson/TokenVesting.json";
 
 export default {
-  name: "StakingLimitForLPHistory3",
+  name: "StakingLimitForSingleHistory2",
   data: () => ({
     DAOAddress,
     DSTAddress,
@@ -297,7 +297,7 @@ export default {
     async getAccountAssets() {
       const contract = getContract(
         StakingLimit,
-        StakingLimitForLPContractAddress3,
+        StakingLimitForSingleContractAddress2,
         this.web3
       );
       this.accountAssets.tokenVestingAddressList = await contract.methods
@@ -308,7 +308,7 @@ export default {
     async getContractInfo() {
       const contract = getContract(
         StakingLimit,
-        StakingLimitForLPContractAddress3,
+        StakingLimitForSingleContractAddress2,
         this.web3
       );
       const rewardsRateInfoList = await contract.methods

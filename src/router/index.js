@@ -8,6 +8,8 @@ import StakingLimitForLP3 from "../views/staking/StakingLimitForLP3.vue";
 import StakingLimitForLPHistory3 from "../views/staking/StakingLimitForLPHistory3.vue";
 import StakingLimitForSingle1 from "../views/staking/StakingLimitForSingle1.vue";
 import StakingLimitForSingleHistory1 from "../views/staking/StakingLimitForSingleHistory1.vue";
+import StakingLimitForSingle2 from "../views/staking/StakingLimitForSingle2.vue";
+import StakingLimitForSingleHistory2 from "../views/staking/StakingLimitForSingleHistory2.vue";
 
 Vue.use(VueRouter);
 
@@ -69,9 +71,19 @@ const routes = [
           {
             path: "/staking/single",
             name: "StakingLimitForSingle",
-            redirect: "/staking/single/1",
+            redirect: "/staking/single/2",
             component: () => import("@/layouts/home/ViewBlank.vue"),
             children: [
+              {
+                path: "/staking/single/2",
+                name: "StakingLimitForSingle1",
+                component: StakingLimitForSingle2
+              },
+              {
+                path: "/staking/single/2/history",
+                name: "StakingLimitForSingle1History",
+                component: StakingLimitForSingleHistory2
+              },
               {
                 path: "/staking/single/1",
                 name: "StakingLimitForSingle1",
