@@ -23,6 +23,16 @@ export const StakingLimitForSingleTokenAddress2 =
 export const StakingLimitForSingleContractAddress2 =
   "0xE84d6F2b07ECA5BA4274e4370CF03F74cE98f49e";
 
+export const StakingInviterForLPTokenAddress1 =
+  "0x1dbCac9E084A25d542893B14128a5910dF43a6b7";
+export const StakingInviterForLPContractAddress1 =
+  "0x3cc9d9C821FB81dE961deBC07DDB7bF329eA3C5a";
+
+export const StakingInviterForSingleTokenAddress1 =
+  "0xc096332CAacF00319703558988aD03eC6586e704";
+export const StakingInviterForSingleContractAddress1 =
+  "0xB03b80881538F660B3f49dB4E79e11A040E61D6D";
+
 /********** base **********/
 export const DAOAddress = "0xc096332CAacF00319703558988aD03eC6586e704";
 

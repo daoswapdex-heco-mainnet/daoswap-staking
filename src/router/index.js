@@ -1,15 +1,19 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import StakingLimitForLP1 from "../views/staking/StakingLimitForLP1.vue";
-import StakingLimitForLPHistory1 from "../views/staking/StakingLimitForLPHistory1.vue";
-import StakingLimitForLP2 from "../views/staking/StakingLimitForLP2.vue";
-import StakingLimitForLPHistory2 from "../views/staking/StakingLimitForLPHistory2.vue";
-import StakingLimitForLP3 from "../views/staking/StakingLimitForLP3.vue";
-import StakingLimitForLPHistory3 from "../views/staking/StakingLimitForLPHistory3.vue";
-import StakingLimitForSingle1 from "../views/staking/StakingLimitForSingle1.vue";
-import StakingLimitForSingleHistory1 from "../views/staking/StakingLimitForSingleHistory1.vue";
-import StakingLimitForSingle2 from "../views/staking/StakingLimitForSingle2.vue";
-import StakingLimitForSingleHistory2 from "../views/staking/StakingLimitForSingleHistory2.vue";
+import StakingLimitForLP1 from "../views/staking-limit/StakingLimitForLP1.vue";
+import StakingLimitForLPHistory1 from "../views/staking-limit/StakingLimitForLPHistory1.vue";
+import StakingLimitForLP2 from "../views/staking-limit/StakingLimitForLP2.vue";
+import StakingLimitForLPHistory2 from "../views/staking-limit/StakingLimitForLPHistory2.vue";
+import StakingLimitForLP3 from "../views/staking-limit/StakingLimitForLP3.vue";
+import StakingLimitForLPHistory3 from "../views/staking-limit/StakingLimitForLPHistory3.vue";
+import StakingLimitForSingle1 from "../views/staking-limit/StakingLimitForSingle1.vue";
+import StakingLimitForSingleHistory1 from "../views/staking-limit/StakingLimitForSingleHistory1.vue";
+import StakingLimitForSingle2 from "../views/staking-limit/StakingLimitForSingle2.vue";
+import StakingLimitForSingleHistory2 from "../views/staking-limit/StakingLimitForSingleHistory2.vue";
+import StakingInviterForLP1 from "../views/staking-inviter/StakingInviterForLP1.vue";
+import StakingInviterForLPHistory1 from "../views/staking-inviter/StakingInviterForLPHistory1.vue";
+import StakingInviterForSingle1 from "../views/staking-inviter/StakingInviterForSingle1.vue";
+import StakingInviterForSingleHistory1 from "../views/staking-inviter/StakingInviterForSingleHistory1.vue";
 
 Vue.use(VueRouter);
 
@@ -93,6 +97,50 @@ const routes = [
                 path: "/staking/single/1/history",
                 name: "StakingLimitForSingle1History",
                 component: StakingLimitForSingleHistory1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        path: "/staking-inviter",
+        name: "StakingInviter",
+        redirect: "/staking-inviter/lp",
+        component: () => import("@/layouts/home/ViewBlank.vue"),
+        children: [
+          {
+            path: "/staking-inviter/lp",
+            name: "StakingInviterForLP",
+            redirect: "/staking-inviter/lp/1",
+            component: () => import("@/layouts/home/ViewBlank.vue"),
+            children: [
+              {
+                path: "/staking-inviter/lp/1",
+                name: "StakingInviterForLP1",
+                component: StakingInviterForLP1
+              },
+              {
+                path: "/staking-inviter/lp/1/history",
+                name: "StakingInviterForLP1History",
+                component: StakingInviterForLPHistory1
+              }
+            ]
+          },
+          {
+            path: "/staking-inviter/single",
+            name: "StakingInviterForSingle",
+            redirect: "/staking-inviter/single/1",
+            component: () => import("@/layouts/home/ViewBlank.vue"),
+            children: [
+              {
+                path: "/staking-inviter/single/1",
+                name: "StakingInviterForSingle1",
+                component: StakingInviterForSingle1
+              },
+              {
+                path: "/staking-inviter/single/1/history",
+                name: "StakingInviterForSingle1History",
+                component: StakingInviterForSingleHistory1
               }
             ]
           }
