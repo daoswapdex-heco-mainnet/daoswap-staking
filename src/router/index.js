@@ -37,9 +37,19 @@ const routes = [
           {
             path: "/staking/lp",
             name: "StakingLimitForLP",
-            redirect: "/staking/lp/3",
+            redirect: "/staking/lp/4",
             component: () => import("@/layouts/home/ViewBlank.vue"),
             children: [
+              {
+                path: "/staking/lp/4",
+                name: "StakingLimitForLP4",
+                component: StakingInviterForLP1
+              },
+              {
+                path: "/staking/lp/4/history",
+                name: "StakingLimitForLP4History",
+                component: StakingInviterForLPHistory1
+              },
               {
                 path: "/staking/lp/3",
                 name: "StakingLimitForLP3",
@@ -75,17 +85,27 @@ const routes = [
           {
             path: "/staking/single",
             name: "StakingLimitForSingle",
-            redirect: "/staking/single/2",
+            redirect: "/staking/single/3",
             component: () => import("@/layouts/home/ViewBlank.vue"),
             children: [
               {
+                path: "/staking/single/3",
+                name: "StakingLimitForSingle3",
+                component: StakingInviterForSingle1
+              },
+              {
+                path: "/staking/single/3/history",
+                name: "StakingLimitForSingle3History",
+                component: StakingInviterForSingleHistory1
+              },
+              {
                 path: "/staking/single/2",
-                name: "StakingLimitForSingle1",
+                name: "StakingLimitForSingle2",
                 component: StakingLimitForSingle2
               },
               {
                 path: "/staking/single/2/history",
-                name: "StakingLimitForSingle1History",
+                name: "StakingLimitForSingle2History",
                 component: StakingLimitForSingleHistory2
               },
               {
@@ -102,50 +122,50 @@ const routes = [
           }
         ]
       },
-      {
-        path: "/staking-inviter",
-        name: "StakingInviter",
-        redirect: "/staking-inviter/lp",
-        component: () => import("@/layouts/home/ViewBlank.vue"),
-        children: [
-          {
-            path: "/staking-inviter/lp",
-            name: "StakingInviterForLP",
-            redirect: "/staking-inviter/lp/1",
-            component: () => import("@/layouts/home/ViewBlank.vue"),
-            children: [
-              {
-                path: "/staking-inviter/lp/1",
-                name: "StakingInviterForLP1",
-                component: StakingInviterForLP1
-              },
-              {
-                path: "/staking-inviter/lp/1/history",
-                name: "StakingInviterForLP1History",
-                component: StakingInviterForLPHistory1
-              }
-            ]
-          },
-          {
-            path: "/staking-inviter/single",
-            name: "StakingInviterForSingle",
-            redirect: "/staking-inviter/single/1",
-            component: () => import("@/layouts/home/ViewBlank.vue"),
-            children: [
-              {
-                path: "/staking-inviter/single/1",
-                name: "StakingInviterForSingle1",
-                component: StakingInviterForSingle1
-              },
-              {
-                path: "/staking-inviter/single/1/history",
-                name: "StakingInviterForSingle1History",
-                component: StakingInviterForSingleHistory1
-              }
-            ]
-          }
-        ]
-      },
+      // {
+      //   path: "/staking-inviter",
+      //   name: "StakingInviter",
+      //   redirect: "/staking-inviter/lp",
+      //   component: () => import("@/layouts/home/ViewBlank.vue"),
+      //   children: [
+      //     {
+      //       path: "/staking-inviter/lp",
+      //       name: "StakingInviterForLP",
+      //       redirect: "/staking-inviter/lp/1",
+      //       component: () => import("@/layouts/home/ViewBlank.vue"),
+      //       children: [
+      //         {
+      //           path: "/staking-inviter/lp/1",
+      //           name: "StakingInviterForLP1",
+      //           component: StakingInviterForLP1
+      //         },
+      //         {
+      //           path: "/staking-inviter/lp/1/history",
+      //           name: "StakingInviterForLP1History",
+      //           component: StakingInviterForLPHistory1
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       path: "/staking-inviter/single",
+      //       name: "StakingInviterForSingle",
+      //       redirect: "/staking-inviter/single/1",
+      //       component: () => import("@/layouts/home/ViewBlank.vue"),
+      //       children: [
+      //         {
+      //           path: "/staking-inviter/single/1",
+      //           name: "StakingInviterForSingle1",
+      //           component: StakingInviterForSingle1
+      //         },
+      //         {
+      //           path: "/staking-inviter/single/1/history",
+      //           name: "StakingInviterForSingle1History",
+      //           component: StakingInviterForSingleHistory1
+      //         }
+      //       ]
+      //     }
+      //   ]
+      // },
       {
         path: "/404",
         component: () => import("@/views/404.vue")

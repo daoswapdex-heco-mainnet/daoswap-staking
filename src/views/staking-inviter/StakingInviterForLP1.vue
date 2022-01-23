@@ -475,7 +475,7 @@ export default {
     },
     // 跳转历史记录
     gotoHistory() {
-      this.$router.push({ path: "/staking-inviter/lp/1/history" });
+      this.$router.push({ path: "/staking/lp/4/history" });
     }
   }
 };
