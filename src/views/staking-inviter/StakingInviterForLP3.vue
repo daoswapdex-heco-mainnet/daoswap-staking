@@ -16,7 +16,7 @@
                 <v-col class="body-1" cols="12">
                   <p>
                     {{ $t("Staking Cap Amount") }} /
-                    {{ $t("Staked Total Amount") }}：{{ cap }} /
+                    {{ $t("Staked Total Amount") }}：300000 /
                     {{ stakedTotalAmount }}
                     {{ tokenSymbol }}
                   </p>
