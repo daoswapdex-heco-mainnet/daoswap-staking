@@ -40,7 +40,7 @@ export default {
       {
         title: "Daoswap",
         icon: "mdi-home",
-        url: "https://app.heco.daoswap.cc"
+        url: "https://app.daoswap.cc"
       },
       {
         title: "Twitter",
