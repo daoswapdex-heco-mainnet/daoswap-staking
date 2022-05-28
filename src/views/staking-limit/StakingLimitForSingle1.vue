@@ -46,7 +46,7 @@
                 </span>
               </v-card-title>
               <v-divider></v-divider>
-              <v-card-text v-if="!capReached">
+              <v-card-text v-if="!capReached && isOpen">
                 <form>
                   <v-card-text>
                     <v-text-field
@@ -209,10 +209,10 @@ import {
   StakingLimitForSingleTokenAddress1,
   StakingLimitForSingleContractAddress1
 } from "@/constants";
-import { getContract, weiToEther, etherToWei } from "@/utils/web3";
+import { getContractByABI, weiToEther, etherToWei } from "@/utils/web3";
 // 引入合约 ABI 文件
-import ERC20DAO from "@/constants/contractJson/ERC20DAO.json";
-import StakingLimit from "@/constants/contractJson/StakingLimit.json";
+import ERC20DAO_ABI from "@/constants/contractJson/ERC20DAO_abi.json";
+import StakingLimit_ABI from "@/constants/contractJson/StakingLimit_abi.json";
 
 export default {
   name: "StakingLimitForSingle1",
@@ -242,6 +242,7 @@ export default {
     cap: 0,
     maxStakingAmount: 0,
     minStakingAmount: 0,
+    isOpen: true,
     // 提示框
     operationResult: {
       color: "success",
@@ -352,8 +353,8 @@ export default {
     // 获取账号信息
     async getAccountAssets() {
       // 查询当前账号余额
-      const contractERC20DAO = getContract(
-        ERC20DAO,
+      const contractERC20DAO = getContractByABI(
+        ERC20DAO_ABI,
         StakingLimitForSingleTokenAddress1,
         this.web3
       );
@@ -368,8 +369,8 @@ export default {
     },
     // 获取质押合约信息
     async getContractInfo() {
-      const contract = getContract(
-        StakingLimit,
+      const contract = getContractByABI(
+        StakingLimit_ABI,
         StakingLimitForSingleContractAddress1,
         this.web3
       );
@@ -385,7 +386,11 @@ export default {
       this.minStakingAmount = weiToEther(minStakingAmount, this.web3);
       this.capReached = await contract.methods.capReached().call();
       const stakingToken = await contract.methods.stakingToken().call();
-      const contractERC20DAO = getContract(ERC20DAO, stakingToken, this.web3);
+      const contractERC20DAO = getContractByABI(
+        ERC20DAO_ABI,
+        stakingToken,
+        this.web3
+      );
       this.tokenSymbol = await contractERC20DAO.methods.symbol().call();
 
       const tokenVestingInfo = await contract.methods
@@ -410,12 +415,19 @@ export default {
       )
         ? weiToEther(remainingStakingAmount.toString(), this.web3)
         : weiToEther(enableStakingAmount.toString(), this.web3);
+      this.isOpen = JSBI.lessThan(remainingStakingAmount, enableStakingAmount)
+        ? JSBI.lessThan(JSBI.BigInt(minStakingAmount), remainingStakingAmount)
+        : JSBI.lessThan(JSBI.BigInt(minStakingAmount), enableStakingAmount);
     },
     // 授权
     handleApprove() {
       this.loading = true;
       // 执行合约
-      getContract(ERC20DAO, StakingLimitForSingleTokenAddress1, this.web3)
+      getContractByABI(
+        ERC20DAO_ABI,
+        StakingLimitForSingleTokenAddress1,
+        this.web3
+      )
         .methods.approve(
           StakingLimitForSingleContractAddress1,
           etherToWei(this.stakingAmount, this.web3)
@@ -447,8 +459,8 @@ export default {
       } else {
         this.$v.$touch();
         this.loading = true;
-        getContract(
-          StakingLimit,
+        getContractByABI(
+          StakingLimit_ABI,
           StakingLimitForSingleContractAddress1,
           this.web3
         )

@@ -208,16 +208,16 @@ import clip from "@/utils/clipboard";
 import {
   DAOAddress,
   DSTAddress,
-  StakingInviterForLPTokenAddress1,
-  StakingInviterForLPContractAddress1
+  StakingLimitForLPTokenAddress7,
+  StakingLimitForLPContractAddress7
 } from "@/constants";
 import { getContractByABI, weiToEther, etherToWei } from "@/utils/web3";
 // 引入合约 ABI 文件
 import ERC20DAO_ABI from "@/constants/contractJson/ERC20DAO_abi.json";
-import StakingInviter_ABI from "@/constants/contractJson/StakingInviter_abi.json";
+import StakingLimit_ABI from "@/constants/contractJson/StakingLimit_abi.json";
 
 export default {
-  name: "StakingInviterForLP1",
+  name: "StakingLimitForLP3",
   mixins: [validationMixin],
   validations: {
     stakingAmount: { required, decimal }
@@ -250,7 +250,10 @@ export default {
       color: "success",
       snackbar: false,
       text: `Hello`
-    }
+    },
+    // 补差额
+    capDiff: 100000,
+    stakedTotalAmountDiff: 100000
   }),
   created() {
     if (this.web3 && this.connected) {
@@ -353,14 +356,14 @@ export default {
       // 查询当前账号余额
       const contractERC20DAO = getContractByABI(
         ERC20DAO_ABI,
-        StakingInviterForLPTokenAddress1,
+        StakingLimitForLPTokenAddress7,
         this.web3
       );
       const balance = await contractERC20DAO.methods
         .balanceOf(this.address)
         .call();
       const allowance = await contractERC20DAO.methods
-        .allowance(this.address, StakingInviterForLPContractAddress1)
+        .allowance(this.address, StakingLimitForLPContractAddress7)
         .call();
       this.accountAssets.balance = weiToEther(balance, this.web3);
       this.accountAssets.allowanceAmount = weiToEther(allowance, this.web3);
@@ -368,16 +371,27 @@ export default {
     // 获取质押合约信息
     async getContractInfo() {
       const contract = getContractByABI(
-        StakingInviter_ABI,
-        StakingInviterForLPContractAddress1,
+        StakingLimit_ABI,
+        StakingLimitForLPContractAddress7,
         this.web3
       );
       const stakedTotalAmount = await contract.methods
         .stakedTotalAmount()
         .call();
-      this.stakedTotalAmount = weiToEther(stakedTotalAmount, this.web3);
+      const stakedTotalAmountFormat = JSBI.add(
+        JSBI.BigInt(stakedTotalAmount),
+        JSBI.BigInt(etherToWei(this.stakedTotalAmountDiff, this.web3))
+      );
+      this.stakedTotalAmount = weiToEther(
+        stakedTotalAmountFormat.toString(),
+        this.web3
+      );
       const cap = await contract.methods.cap().call();
-      this.cap = weiToEther(cap, this.web3);
+      const capAmountFormat = JSBI.add(
+        JSBI.BigInt(cap),
+        JSBI.BigInt(etherToWei(this.capDiff, this.web3))
+      );
+      this.cap = weiToEther(capAmountFormat.toString(), this.web3);
       const maxStakingAmount = await contract.methods.maxStakingAmount().call();
       this.maxStakingAmount = weiToEther(maxStakingAmount, this.web3);
       const minStakingAmount = await contract.methods.minStakingAmount().call();
@@ -400,8 +414,8 @@ export default {
       );
       // 计算最多可质押数量
       const remainingStakingAmount = JSBI.subtract(
-        JSBI.BigInt(cap),
-        JSBI.BigInt(stakedTotalAmount)
+        capAmountFormat,
+        stakedTotalAmountFormat
       );
       const enableStakingAmount = JSBI.subtract(
         JSBI.BigInt(maxStakingAmount),
@@ -421,13 +435,9 @@ export default {
     handleApprove() {
       this.loading = true;
       // 执行合约
-      getContractByABI(
-        ERC20DAO_ABI,
-        StakingInviterForLPTokenAddress1,
-        this.web3
-      )
+      getContractByABI(ERC20DAO_ABI, StakingLimitForLPTokenAddress7, this.web3)
         .methods.approve(
-          StakingInviterForLPContractAddress1,
+          StakingLimitForLPContractAddress7,
           etherToWei(this.stakingAmount, this.web3)
         )
         .send({ from: this.address })
@@ -458,8 +468,8 @@ export default {
         this.$v.$touch();
         this.loading = true;
         getContractByABI(
-          StakingInviter_ABI,
-          StakingInviterForLPContractAddress1,
+          StakingLimit_ABI,
+          StakingLimitForLPContractAddress7,
           this.web3
         )
           .methods.stakingTokens(etherToWei(this.stakingAmount, this.web3))
@@ -479,7 +489,7 @@ export default {
     },
     // 跳转历史记录
     gotoHistory() {
-      this.$router.push({ path: "/staking/lp/4/history" });
+      this.$router.push({ path: "/staking/lp/7/history" });
     }
   }
 };

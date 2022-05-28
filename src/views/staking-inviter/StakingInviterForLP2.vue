@@ -46,7 +46,7 @@
                 </span>
               </v-card-title>
               <v-divider></v-divider>
-              <v-card-text v-if="!capReached">
+              <v-card-text v-if="!capReached && isOpen">
                 <form>
                   <v-card-text>
                     <v-text-field
@@ -244,6 +244,7 @@ export default {
     cap: 0,
     maxStakingAmount: 0,
     minStakingAmount: 0,
+    isOpen: true,
     // 提示框
     operationResult: {
       color: "success",
@@ -412,6 +413,9 @@ export default {
       )
         ? weiToEther(remainingStakingAmount.toString(), this.web3)
         : weiToEther(enableStakingAmount.toString(), this.web3);
+      this.isOpen = JSBI.lessThan(remainingStakingAmount, enableStakingAmount)
+        ? JSBI.lessThan(JSBI.BigInt(minStakingAmount), remainingStakingAmount)
+        : JSBI.lessThan(JSBI.BigInt(minStakingAmount), enableStakingAmount);
     },
     // 授权
     handleApprove() {

@@ -203,7 +203,7 @@ import clip from "@/utils/clipboard";
 import {
   DAOAddress,
   DSTAddress,
-  StakingLimitForLPContractAddress3
+  StakingLimitForLPContractAddress7
 } from "@/constants";
 import { getContractByABI, weiToEther, toChecksumAddress } from "@/utils/web3";
 import { compare } from "@/filters/index";
@@ -297,7 +297,7 @@ export default {
     async getAccountAssets() {
       const contract = getContractByABI(
         StakingLimit_ABI,
-        StakingLimitForLPContractAddress3,
+        StakingLimitForLPContractAddress7,
         this.web3
       );
       this.accountAssets.tokenVestingAddressList = await contract.methods
@@ -308,7 +308,7 @@ export default {
     async getContractInfo() {
       const contract = getContractByABI(
         StakingLimit_ABI,
-        StakingLimitForLPContractAddress3,
+        StakingLimitForLPContractAddress7,
         this.web3
       );
       const rewardsRateInfoList = await contract.methods

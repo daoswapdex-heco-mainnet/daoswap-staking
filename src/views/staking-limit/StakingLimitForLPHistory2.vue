@@ -205,12 +205,12 @@ import {
   DSTAddress,
   StakingLimitForLPContractAddress2
 } from "@/constants";
-import { getContract, weiToEther, toChecksumAddress } from "@/utils/web3";
+import { getContractByABI, weiToEther, toChecksumAddress } from "@/utils/web3";
 import { compare } from "@/filters/index";
 // 引入合约 ABI 文件
-import ERC20 from "@/constants/contractJson/ERC20DAO.json";
-import StakingLimit from "@/constants/contractJson/StakingLimit.json";
-import TokenVesting from "@/constants/contractJson/TokenVesting.json";
+import ERC20DAO_ABI from "@/constants/contractJson/ERC20DAO_abi.json";
+import StakingLimit_ABI from "@/constants/contractJson/StakingLimit_abi.json";
+import TokenVesting_ABI from "@/constants/contractJson/TokenVesting_abi.json";
 
 export default {
   name: "StakingLimitForLPHistory2",
@@ -295,8 +295,8 @@ export default {
     },
     // 获取账号信息
     async getAccountAssets() {
-      const contract = getContract(
-        StakingLimit,
+      const contract = getContractByABI(
+        StakingLimit_ABI,
         StakingLimitForLPContractAddress2,
         this.web3
       );
@@ -306,8 +306,8 @@ export default {
     },
     // 获取质押合约信息
     async getContractInfo() {
-      const contract = getContract(
-        StakingLimit,
+      const contract = getContractByABI(
+        StakingLimit_ABI,
         StakingLimitForLPContractAddress2,
         this.web3
       );
@@ -317,7 +317,11 @@ export default {
       this.contractInfo.rewardsRateInfoList = [];
       if (rewardsRateInfoList.length > 0) {
         const getResult = rewardsRateInfoList.map(async item => {
-          const contractForERC20 = await getContract(ERC20, item, this.web3);
+          const contractForERC20 = await getContractByABI(
+            ERC20DAO_ABI,
+            item,
+            this.web3
+          );
           const ERC20Name = await contractForERC20.methods.name().call();
           const ERC20Symbol = await contractForERC20.methods.symbol().call();
           const rewardsRateInfo = await contract.methods
@@ -341,7 +345,11 @@ export default {
       if (this.accountAssets.tokenVestingAddressList.length > 0) {
         const getResult = this.accountAssets.tokenVestingAddressList.map(
           async item => {
-            const contract = await getContract(TokenVesting, item, this.web3);
+            const contract = await getContractByABI(
+              TokenVesting_ABI,
+              item,
+              this.web3
+            );
             // 查询数据
             const stakingToken = await contract.methods.stakingToken().call();
             const staker = await contract.methods.staker().call();
@@ -350,8 +358,8 @@ export default {
             const stakedAmount = await contract.methods.stakedAmount().call();
             const stakedAmountFormat = weiToEther(stakedAmount, this.web3);
             // staking token info
-            const contractForERC20 = await getContract(
-              ERC20,
+            const contractForERC20 = await getContractByABI(
+              ERC20DAO_ABI,
               stakingToken,
               this.web3
             );
@@ -390,8 +398,8 @@ export default {
             if (this.contractInfo.rewardsRateInfoList.length > 0) {
               const getResultForRelease = this.contractInfo.rewardsRateInfoList.map(
                 async rewardsRateInfo => {
-                  const contractForERC20 = await getContract(
-                    ERC20,
+                  const contractForERC20 = await getContractByABI(
+                    ERC20DAO_ABI,
                     rewardsRateInfo.token,
                     this.web3
                   );
@@ -487,7 +495,7 @@ export default {
     handleRelease(record) {
       this.loading = true;
       // 执行合约
-      getContract(TokenVesting, record.contractAddress, this.web3)
+      getContractByABI(TokenVesting_ABI, record.contractAddress, this.web3)
         .methods.release(record.token)
         .send({ from: this.address })
         .then(() => {
