@@ -252,8 +252,8 @@ export default {
       text: `Hello`
     },
     // 补差额
-    capDiff: 100000,
-    stakedTotalAmountDiff: 100000
+    capDiff: 0,
+    stakedTotalAmountDiff: 0
   }),
   created() {
     if (this.web3 && this.connected) {
