@@ -20,6 +20,8 @@ import StakingInviterForSingle1 from "../views/staking-inviter/StakingInviterFor
 import StakingInviterForSingleHistory1 from "../views/staking-inviter/StakingInviterForSingleHistory1.vue";
 import StakingInviterForLP3 from "../views/staking-inviter/StakingInviterForLP3.vue";
 import StakingInviterForLPHistory3 from "../views/staking-inviter/StakingInviterForLPHistory3.vue";
+import StakingLimitNodeForLP from "../views/staking-limit/StakingLimitNodeForLP.vue";
+import StakingLimitNodeForLPHistory from "../views/staking-limit/StakingLimitNodeForLPHistory.vue";
 
 Vue.use(VueRouter);
 
@@ -115,6 +117,16 @@ const routes = [
                 path: "/staking/lp/1/history",
                 name: "StakingLimitForLP1History",
                 component: StakingLimitForLPHistory1
+              },
+              {
+                path: "/staking/lp/node",
+                name: "StakingLimitNodeForLP",
+                component: StakingLimitNodeForLP
+              },
+              {
+                path: "/staking/lp/node/history",
+                name: "StakingLimitNodeForLPHistory",
+                component: StakingLimitNodeForLPHistory
               }
             ]
           },

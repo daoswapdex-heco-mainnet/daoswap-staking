@@ -104,5 +104,9 @@ export default {
   "Staked Total Amount": "Staked",
   "Staked LP Total Amount": "Staked LP Total Amount",
   "Staked DAO Total Amount": "Staked DAO Total Amount",
-  "Claim Staking": "Claim Staking"
+  "Claim Staking": "Claim Staking",
+
+  "Old Node": "Old Node",
+  "The account does not meet the requirements":
+    "The account does not meet the requirements"
 };

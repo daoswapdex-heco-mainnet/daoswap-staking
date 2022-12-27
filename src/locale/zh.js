@@ -100,5 +100,8 @@ export default {
   "Staked Total Amount": "已质押",
   "Staked LP Total Amount": "已质押LP总量",
   "Staked DAO Total Amount": "已质押DAO总量",
-  "Claim Staking": "取出质押"
+  "Claim Staking": "取出质押",
+
+  "Old Node": "旧节点",
+  "The account does not meet the requirements": "账号不满足需求"
 };
