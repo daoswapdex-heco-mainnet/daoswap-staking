@@ -212,7 +212,7 @@
 </template>
 
 <script>
-import { JSBI } from "@/utils/jsbi";
+// import { JSBI } from "@/utils/jsbi";
 import { validationMixin } from "vuelidate";
 import { required, decimal } from "vuelidate/lib/validators";
 import clip from "@/utils/clipboard";
@@ -388,7 +388,7 @@ export default {
       this.stakedTotalAmount = weiToEther(stakedTotalAmount, this.web3);
       const cap = await contract.methods.cap().call();
       this.cap = weiToEther(cap, this.web3);
-      this.capReached = await contract.methods.capReached().call();
+      this.capReached = true; // await contract.methods.capReached().call();
       this.isAllowStaking = await contract.methods.isAllowStaking().call({
         from: this.address
       });
@@ -412,10 +412,10 @@ export default {
         .getEnableStakingAmount(this.address)
         .call();
       this.maxStakingAmount = weiToEther(enableStakingAmount, this.web3);
-      this.isOpen = JSBI.lessThan(
-        JSBI.BigInt(0),
-        JSBI.BigInt(enableStakingAmount)
-      );
+      this.isOpen = false; // JSBI.lessThan(
+      //   JSBI.BigInt(0),
+      //   JSBI.BigInt(enableStakingAmount)
+      // );
     },
     // 授权
     handleApprove() {
